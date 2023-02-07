@@ -1,4 +1,4 @@
-package com.vitbuk.spring;
+package com.vitbuk.spring.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 

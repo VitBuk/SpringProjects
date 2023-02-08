@@ -47,4 +47,10 @@ public class PersonDAO {
     public void delete(int id) {
         jdbcTemplate.update("DELETE FROM Person WHERE id=?", id);
     }
+
+    /*
+    * Тестируем производительность пакетной вставки
+    * */
+
+    public void testMultipleUpdate
 }

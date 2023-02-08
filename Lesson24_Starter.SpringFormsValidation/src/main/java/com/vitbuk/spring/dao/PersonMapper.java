@@ -1,3 +1,4 @@
+/*
 package com.vitbuk.spring.dao;
 
 import com.vitbuk.spring.models.Person;
@@ -18,3 +19,6 @@ public class PersonMapper implements RowMapper<Person> {
         return person;
     }
 }
+*/
+
+// ^ thats how we did before BeanRowMapper

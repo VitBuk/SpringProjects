@@ -1,4 +1,4 @@
-package ru.alishev.springcourse.models;
+package com.vitbuk.spring.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;

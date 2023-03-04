@@ -1,4 +1,5 @@
-package ru.alishev.springcourse.config;
+package com.vitbuk.spring.config;
+
 
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
@@ -10,9 +11,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import java.util.EnumSet;
 
-/**
- * @author Neil Alishev
- */
 public class MySpringMvcDispatcherSerlvetIntitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {

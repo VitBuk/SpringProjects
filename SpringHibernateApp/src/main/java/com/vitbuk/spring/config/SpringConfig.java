@@ -1,4 +1,4 @@
-package ru.alishev.springcourse.config;
+package com.vitbuk.spring.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -7,9 +7,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -26,9 +28,10 @@ import java.util.Properties;
  * @author Neil Alishev
  */
 @Configuration
-@ComponentScan("ru.alishev.springcourse")
+@ComponentScan("com.vitbuk.spring")
 @PropertySource("classpath:hibernate.properties")
 @EnableTransactionManagement
+@EnableJpaRepositories("com.vitbuk.spring.repositories")
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
 
@@ -95,20 +98,40 @@ public class SpringConfig implements WebMvcConfigurer {
         return properties;
     }
 
-    @Bean
-    public LocalSessionFactoryBean sessionFactory() {
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("ru.alishev.springcourse.models");
-        sessionFactory.setHibernateProperties(hibernateProperties());
+//    @Bean
+//    public LocalSessionFactoryBean sessionFactory() {
+//        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+//        sessionFactory.setDataSource(dataSource());
+//        sessionFactory.setPackagesToScan("ru.alishev.springcourse.models");
+//        sessionFactory.setHibernateProperties(hibernateProperties());
+//
+//        return sessionFactory;
+//    }
 
-        return sessionFactory;
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+        em.setDataSource(dataSource());
+        em.setPackagesToScan("com.vitbuk.spring.models");
+
+        final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        em.setJpaVendorAdapter(vendorAdapter);
+        em.setJpaProperties(hibernateProperties());
+
+        return em;
     }
+//    @Bean
+//    public PlatformTransactionManager hibernateTransactionManager() {
+//        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+//        transactionManager.setSessionFactory(sessionFactory().getObject());
+//
+//        return transactionManager;
+//    }
 
     @Bean
-    public PlatformTransactionManager hibernateTransactionManager() {
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sessionFactory().getObject());
+    public PlatformTransactionManager transactionManager() {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
 
         return transactionManager;
     }

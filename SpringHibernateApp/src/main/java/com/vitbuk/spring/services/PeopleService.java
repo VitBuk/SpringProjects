@@ -1,11 +1,13 @@
 package com.vitbuk.spring.services;
 
+import com.vitbuk.spring.models.Mood;
 import com.vitbuk.spring.models.Person;
 import com.vitbuk.spring.repositories.PeopleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +35,8 @@ public class PeopleService {
 
     @Transactional
     public void save(Person person) {
+        person.setMood(Mood.CALM); // '4' will be added to DB
+        person.setCreatedAt(new Date());
         peopleRepository.save(person);
     }
 
